@@ -1,0 +1,28 @@
+<svg width="1200" height="340" viewBox="0 0 1200 340" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bloomgate">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1200" y2="340" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#1a1216"/>
+<stop offset="0.55" stop-color="#2b1a24"/>
+<stop offset="1" stop-color="#3b2130"/>
+</linearGradient>
+<radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 118) scale(340 200)">
+<stop offset="0" stop-color="#e88aa8" stop-opacity="0.28"/>
+<stop offset="1" stop-color="#e88aa8" stop-opacity="0"/>
+</radialGradient>
+<path id="p" d="M0 -9C7 -15 16 -25 8 -44C-4 -38 -11 -22 0 -9Z"/>
+</defs>
+<rect width="1200" height="340" rx="20" fill="url(#bg)"/>
+<rect width="1200" height="340" rx="20" fill="url(#glow)"/>
+<g transform="translate(600 112) scale(1.5)" fill="#ffffff">
+<use href="#p"/>
+<use href="#p" transform="rotate(45)"/>
+<use href="#p" transform="rotate(90)"/>
+<use href="#p" transform="rotate(135)"/>
+<use href="#p" transform="rotate(180)"/>
+<use href="#p" transform="rotate(225)"/>
+<use href="#p" transform="rotate(270)"/>
+<use href="#p" transform="rotate(315)"/>
+</g>
+<text x="600" y="234" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="58" letter-spacing="10" fill="#ffffff">BLOOMGATE</text>
+<text x="600" y="278" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="17" letter-spacing="4" fill="#e9c4d1">AN IMMERSIVE TRIP THROUGH A GARDEN OF FLOWERS</text>
+</svg>
