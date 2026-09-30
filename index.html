@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloomgate</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="experience">
+  <div class="preloader" id="preloader" aria-label="Loading">
+    <img id="preloader-image" src="foto/rosa.jpg" alt="">
+    <div class="preloader-shade"></div>
+  </div>
+  <img class="floating-logo" id="floating-logo" src="logo/logo.svg" alt="Bloomgate">
+  <div class="preloader-count" id="preloader-count" aria-live="polite"><span id="preloader-value">0</span><span class="percent">%</span></div>
+
+  <header class="header chrome">
+    <div class="header-actions">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="active" href="#about" data-view="about">About</a><a href="#explore" data-view="explore">Explore</a><a href="#flowers" data-view="flowers">Flowers</a>
+      </nav>
+      <button class="menu" type="button">Menu</button>
+    </div>
+  </header>
+
+  <aside class="flower-list chrome" aria-label="Flowers"></aside>
+
+  <canvas id="portal-canvas" class="portal-canvas" aria-hidden="true"></canvas>
+  <section class="portal-wrap chrome" aria-label="Next destination">
+    <div class="portal-heading">
+      <span>Next:</span>
+      <span><span id="next-number"></span> <strong id="next-name"></strong></span>
+    </div>
+    <button class="portal" id="portal" type="button"></button>
+  </section>
+
+  <section class="flower-content chrome" aria-live="polite">
+    <h1 id="flower-title"></h1>
+    <dl id="facts"></dl>
+  </section>
+
+  <div class="panel" id="panel" aria-hidden="true">
+    <div class="panel-backdrop"></div>
+    <div class="panel-card" role="dialog" aria-modal="true">
+      <button class="panel-close" type="button">Close</button>
+      <div class="panel-view" data-view="menu" hidden>
+        <p class="panel-kicker">Menu</p>
+        <button class="menu-link" type="button" data-open="about">About</button>
+        <button class="menu-link" type="button" data-open="explore">Explore</button>
+        <button class="menu-link" type="button" data-open="flowers">Flowers</button>
+      </div>
+      <div class="panel-view" data-view="about" hidden>
+        <p class="panel-kicker">About</p>
+        <h2>Bloomgate</h2>
+        <p class="about-lead">A slow trip through a garden of eight flowers. Each one opens into a full-screen view, with its family, blooming season, meaning and a small curiosity.</p>
+        <ol class="about-steps">
+          <li><strong>Step through the portal</strong><span>Click the window in the middle of the screen to fly to the next flower.</span></li>
+          <li><strong>Pick any flower</strong><span>Use the list on the left, or the Flowers tab, to jump straight to the one you want.</span></li>
+          <li><strong>Learn as you go</strong><span>Explore shows a close-up of the current flower next to everything we know about it.</span></li>
+        </ol>
+        <dl class="about-stats">
+          <div><dt>8</dt><dd>flowers</dd></div>
+          <div><dt>4</dt><dd>facts each</dd></div>
+          <div><dt>1</dt><dd>portal</dd></div>
+        </dl>
+        <p class="about-note">Move the mouse to tilt the portal window. Press Esc to close any panel.</p>
+      </div>
+      <div class="panel-view" data-view="explore" hidden>
+        <p class="panel-kicker">Explore</p>
+        <div class="explore-body">
+          <canvas id="explore-art" width="360" height="360" aria-hidden="true"></canvas>
+          <div>
+            <h2 id="explore-title"></h2>
+            <p id="explore-blurb"></p>
+            <dl id="explore-facts"></dl>
+          </div>
+        </div>
+        <div class="panel-actions">
+          <button class="pill" type="button" id="explore-next"></button>
+          <button class="pill ghost" type="button" id="explore-random">Surprise me</button>
+        </div>
+      </div>
+      <div class="panel-view" data-view="flowers" hidden>
+        <p class="panel-kicker">Flowers</p>
+        <div class="flower-grid" id="flower-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-cursor" aria-hidden="true">
+    <span class="cursor-orbit"></span><span class="cursor-dot"></span><span class="cursor-label">Enter</span>
+  </div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
