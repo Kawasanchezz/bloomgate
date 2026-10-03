@@ -65,7 +65,7 @@
   let current = 'rosa', busy = false, rendered = false;
   let rotX = 0, rotY = 0, targetX = 0, targetY = 0;
   let expansion = 0, maskScale = 1;
-  let transitionActive = false, transitionSource = null, backdrop = null;
+  let transitionActive = false, transitionSource = null, backdrop = null, originRect = null;
   let lastT = performance.now();
 
   const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
@@ -231,14 +231,14 @@
       ctx.drawImage(backdropCache.canvas, 0, 0, W, H);
     }
 
-    const rect = portal.getBoundingClientRect();
+    const rect = originRect || portal.getBoundingClientRect();
     const e = expansion;
     const rcx = rect.left + rect.width / 2, rcy = rect.top + rect.height / 2;
     const cx = rcx + (W / 2 - rcx) * e, cy = rcy + (H / 2 - rcy) * e;
     const baseW = rect.width + (W - rect.width) * e, baseH = rect.height + (H - rect.height) * e;
     const scale = maskScale + (1 - maskScale) * e;
     const w = baseW * scale, h = baseH * scale;
-    const r = 90 * (1 - e) * scale;
+    const r = (originRect ? 22 : 90) * (1 - e) * scale;
     if (w > 1 && h > 1) {
       const pts = roundedRectPoints(w, h, r).map(([x, y]) => project(x, y, rotX * (1 - e), rotY * (1 - e), cx, cy));
       ctx.save();
@@ -275,12 +275,13 @@
     revealContent();
   }
 
-  async function travel(target) {
+  async function travel(target, origin) {
     if (busy || !document.body.classList.contains('intro-ready')) return;
     const dest = typeof target === 'string' ? target : states[current].nextKey;
     if (dest === current || !states[dest]) return;
     busy = true;
     targetX = targetY = 0;
+    originRect = origin ? origin.getBoundingClientRect() : null;
     closePanel();
     try {
       transitionSource = loadImage(dest);
@@ -294,7 +295,7 @@
       $('preloader').style.visibility = 'hidden';
       current = dest;
       render();
-      transitionActive = false;
+      transitionActive = false; originRect = null;
       expansion = 0; maskScale = 0;
       experience.classList.remove('is-transitioning');
 
@@ -303,7 +304,7 @@
       revealContent();
       await maskReveal;
     } catch (err) {
-      transitionActive = false;
+      transitionActive = false; originRect = null;
       expansion = 0; maskScale = 1;
       experience.classList.remove('is-transitioning');
     }
@@ -351,7 +352,7 @@
     const open = e.target.closest('[data-open]');
     if (open) return openPanel(open.dataset.open);
     const card = e.target.closest('.flower-card');
-    if (card) return card.dataset.flower === current ? closePanel() : travel(card.dataset.flower);
+    if (card) return card.dataset.flower === current ? closePanel() : travel(card.dataset.flower, card.querySelector("canvas"));
     if (e.target.closest('#explore-next')) return travel();
     if (e.target.closest('#explore-random')) {
       const others = Object.keys(states).filter(k => k !== current);

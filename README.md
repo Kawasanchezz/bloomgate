@@ -66,10 +66,12 @@ Then visit `http://localhost:8000`. It also works as-is on GitHub Pages.
 ```text
 bloomgate/
 ├── index.html   page structure
-├── style.css    layout, animations and panels
-├── script.js    flower data, portal canvas, travel and panels
+├── css/
+│   └── style.css   layout, animations and panels
+├── js/
+│   └── script.js   flower data, portal canvas, travel and panels
 ├── foto/        one photo per flower
-└── logo/        logo and banner
+└── logo/        logo, banner and favicons
 ```
 
 ## Customize
@@ -77,7 +79,7 @@ bloomgate/
 **Add or change a flower**
 
 1. Put a landscape photo in `foto/`.
-2. Add an entry to the `FLOWERS` array at the top of `script.js`:
+2. Add an entry to the `FLOWERS` array at the top of `js/script.js`:
 
 ```js
 { key:'peony', name:'Peony', image:'foto/peony.jpg',
@@ -87,10 +89,10 @@ bloomgate/
 
 The portal order follows the array, and the last flower links back to the first. Keep exactly four facts per flower.
 
-**Photo darkness.** Edit `VEIL` in `script.js`.
+**Photo darkness.** Edit `VEIL` in `js/script.js`.
 
 > [!NOTE]
-> The photos are large (about 3 MB each). Compress them, for example to WebP, for faster loading.
+> Photos are compressed JPGs (under 450 KB each) and load on demand — only the current and next flower load up front, the rest load as you travel.
 
 > [!IMPORTANT]
 > Make sure you have the rights to use the photos and the logo before publishing.
