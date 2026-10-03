@@ -170,3 +170,6 @@ body:not(.intro-ready) .header,body:not(.intro-ready) .flower-list,body:not(.int
   .about-steps{grid-template-columns:1fr}
   .about-stats{gap:28px}
 }
+
+/* Hide the header while a panel is open so Menu never overlaps Close */
+.experience:has(.panel.is-open) .header{opacity:0;filter:none;pointer-events:none;transition:opacity .2s ease}
