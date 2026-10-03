@@ -59,7 +59,8 @@
   const experience = document.querySelector('.experience');
   const flowerList = document.querySelector('.flower-list');
   const portal = $('portal');
-  const canvas = $('portal-canvas'), ctx = canvas.getContext('2d');
+  const canvas = $('portal-canvas');
+  let ctx = canvas.getContext('2d'), backdropCache = null;
 
   let current = 'rosa', busy = false, rendered = false;
   let rotX = 0, rotY = 0, targetX = 0, targetY = 0;
@@ -92,12 +93,21 @@
     });
   }
 
+  // Photos load on demand (current + next first) instead of all eight at once.
   const IMAGES = {};
-  FLOWERS.forEach(f => { const img = new Image(); img.src = f.image; IMAGES[f.key] = img; });
-  const portalSource = () => IMAGES[states[current].nextKey];
+  FLOWERS.forEach(f => { IMAGES[f.key] = new Image(); });
+  function loadImage(key) {
+    const img = IMAGES[key];
+    if (!img.getAttribute('src')) {
+      img.decoding = 'async';
+      img.src = FLOWERS.find(f => f.key === key).image;
+    }
+    return img;
+  }
+  const portalSource = () => loadImage(states[current].nextKey);
 
   function paintThumb(c, key) {
-    const img = IMAGES[key];
+    const img = loadImage(key);
     const go = () => {
       const w = img.naturalWidth, h = img.naturalHeight, side = Math.min(w, h);
       c.getContext('2d').drawImage(img, (w - side) / 2, (h - side) / 2, side, side, 0, 0, c.width, c.height);
@@ -113,7 +123,7 @@
     FLOWERS.forEach(f => { h1.textContent = f.name.toUpperCase(); widest = Math.max(widest, h1.scrollWidth); });
     h1.textContent = shown;
     const stacked = getComputedStyle(box).display === 'block';
-    const avail = box.clientWidth - (stacked ? 0 : dl.offsetWidth + 40) - 32;
+    const avail = stacked ? box.clientWidth : box.clientWidth - dl.offsetWidth - 40 - 32;
     if (widest > avail && avail > 0) h1.style.fontSize = (parseFloat(getComputedStyle(h1).fontSize) * avail / widest) + 'px';
   }
 
@@ -140,7 +150,7 @@
   }
 
   function resizeCanvas() {
-    const d = Math.min(window.devicePixelRatio || 1, 2);
+    const d = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = window.innerWidth, h = window.innerHeight;
     canvas.width = w * d; canvas.height = h * d;
     canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
@@ -207,7 +217,19 @@
 
     const W = window.innerWidth, H = window.innerHeight;
     ctx.clearRect(0, 0, W, H);
-    if (backdrop) { drawCover(backdrop); drawShade(); }
+    if (backdrop) {
+      if (!backdropCache || backdropCache.src !== backdrop || backdropCache.w !== canvas.width || backdropCache.h !== canvas.height) {
+        const off = document.createElement('canvas');
+        off.width = canvas.width; off.height = canvas.height;
+        const main = ctx;
+        ctx = off.getContext('2d');
+        ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
+        drawCover(backdrop); drawShade();
+        ctx = main;
+        backdropCache = { src: backdrop, w: canvas.width, h: canvas.height, canvas: off };
+      }
+      ctx.drawImage(backdropCache.canvas, 0, 0, W, H);
+    }
 
     const rect = portal.getBoundingClientRect();
     const e = expansion;
@@ -261,7 +283,7 @@
     targetX = targetY = 0;
     closePanel();
     try {
-      transitionSource = IMAGES[dest];
+      transitionSource = loadImage(dest);
       await imageReady(transitionSource);
       experience.classList.remove('content-revealing', 'mask-revealing');
       experience.classList.add('is-transitioning');
