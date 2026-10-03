@@ -1,0 +1,13 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" rx="24" fill="#2b1a24"/>
+<g transform="translate(50 50) scale(1.02)" fill="white">
+<path id="p" d="M0 -9C7 -15 16 -25 8 -44C-4 -38 -11 -22 0 -9Z"/>
+<use href="#p" transform="rotate(45)"/>
+<use href="#p" transform="rotate(90)"/>
+<use href="#p" transform="rotate(135)"/>
+<use href="#p" transform="rotate(180)"/>
+<use href="#p" transform="rotate(225)"/>
+<use href="#p" transform="rotate(270)"/>
+<use href="#p" transform="rotate(315)"/>
+</g>
+</svg>
