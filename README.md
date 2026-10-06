@@ -97,6 +97,10 @@ The portal order follows the array, and the last flower links back to the first.
 > [!IMPORTANT]
 > Make sure you have the rights to use the photos and the logo before publishing.
 
+## License
+
+The code is released under the [MIT License](LICENSE). The photos and the logo are not covered by it and keep their own rights.
+
 <br>
 
 <div align="center">
