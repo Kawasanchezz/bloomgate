@@ -146,6 +146,7 @@
     $('explore-next').textContent = `Travel to ${s.next}`;
     $('explore-facts').innerHTML = s.facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
     paintThumb($('explore-art'), current);
+    loadImage(s.nextKey);
     fitTitle();
   }
 
@@ -246,9 +247,12 @@
       pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
       ctx.closePath();
       ctx.clip();
-      ctx.fillStyle = '#030303';
-      ctx.fillRect(0, 0, W, H);
-      drawCover(transitionActive ? transitionSource : portalSource());
+      const src = transitionActive ? transitionSource : portalSource();
+      if (src.naturalWidth) {
+        ctx.fillStyle = "#030303";
+        ctx.fillRect(0, 0, W, H);
+        drawCover(src);
+      }
       if (transitionActive) drawShade();
       ctx.restore();
     }
@@ -273,6 +277,7 @@
     document.body.classList.add('intro-ready');
     await wait(700);
     revealContent();
+    FLOWERS.map(f => f.key).filter(k => !IMAGES[k].getAttribute("src")).forEach((k, i) => setTimeout(() => loadImage(k), 500 + i * 700));
   }
 
   async function travel(target, origin) {
